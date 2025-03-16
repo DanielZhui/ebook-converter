@@ -6,6 +6,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const fileInput = document.getElementById("file");
   const formatSelect = document.getElementById("format");
 
+  // 邮箱相关元素
+  const emailSwitch = document.getElementById("send_email_enabled");
+  const emailInputGroup = document.getElementById("email_input_group");
+  const emailInput = document.getElementById("send_to_email");
+
+  // 切换邮箱输入框的显示/隐藏
+  emailSwitch.addEventListener("change", function () {
+    if (this.checked) {
+      emailInputGroup.classList.remove("d-none");
+      emailInput.setAttribute("required", "required");
+    } else {
+      emailInputGroup.classList.add("d-none");
+      emailInput.removeAttribute("required");
+    }
+  });
+
   // 提交表单时显示加载状态
   form.addEventListener("submit", function (e) {
     // 验证文件已选择
@@ -20,6 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       alert("请选择输出格式");
       return;
+    }
+
+    // 验证邮箱格式（如果启用了邮件发送）
+    if (emailSwitch.checked && emailInput.value.trim() !== "") {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(emailInput.value.trim())) {
+        e.preventDefault();
+        alert("请输入有效的邮箱地址");
+        return;
+      }
     }
 
     // 显示加载状态

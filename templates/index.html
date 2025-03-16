@@ -48,6 +48,20 @@
                         </select>
                     </div>
 
+                    <!-- 邮箱发送选项 -->
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="send_email_enabled" name="send_email_enabled">
+                            <label class="form-check-label fw-bold" for="send_email_enabled">发送下载链接到我的邮箱</label>
+                        </div>
+
+                        <div id="email_input_group" class="mt-3 d-none">
+                            <label for="send_to_email" class="form-label">邮箱地址</label>
+                            <input type="email" class="form-control" id="send_to_email" name="send_to_email" placeholder="example@example.com">
+                            <div class="form-text">转换完成后，文件下载链接将发送到此邮箱（链接有效期7天）</div>
+                        </div>
+                    </div>
+
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary btn-lg" id="convert-btn">
                             <span class="spinner-border spinner-border-sm d-none" id="loading-spinner" role="status" aria-hidden="true"></span>
@@ -74,16 +88,16 @@
                         <i class="fas fa-lock fa-3x text-primary"></i>
                     </div>
                     <h3>安全可靠</h3>
-                    <p>所有文件在服务器端安全处理，转换完成后自动清理</p>
+                    <p>所有文件在服务器端安全处理，并存储在私有云存储中</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="feature-box text-center p-4">
                     <div class="feature-icon mb-3">
-                        <i class="fas fa-bolt fa-3x text-primary"></i>
+                        <i class="fas fa-envelope fa-3x text-primary"></i>
                     </div>
-                    <h3>快速处理</h3>
-                    <p>使用高效的转换引擎，快速完成格式转换任务</p>
+                    <h3>邮件通知</h3>
+                    <p>可选择将文件下载链接直接发送到您的邮箱</p>
                 </div>
             </div>
         </div>

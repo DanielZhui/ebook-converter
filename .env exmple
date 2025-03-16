@@ -1,0 +1,24 @@
+# 应用配置
+SECRET_KEY=your_secret_key_here
+DEBUG=False
+
+# 文件路径配置
+UPLOAD_FOLDER=uploads
+DOWNLOAD_FOLDER=downloads
+
+# 阿里云OSS配置
+OSS_ACCESS_KEY_ID=your_access_key_id
+OSS_ACCESS_KEY_SECRET=your_access_key_secret
+OSS_ENDPOINT=https://oss-cn-hangzhou.aliyuncs.com
+OSS_BUCKET_NAME=your-private-bucket-name
+OSS_FOLDER=ebooks/
+OSS_URL_EXPIRATION=604800
+
+# 阿里云邮件推送服务配置
+DM_ACCESS_KEY_ID=your_access_key_id
+DM_ACCESS_KEY_SECRET=your_access_key_secret
+DM_REGION=cn-hangzhou
+DM_ACCOUNT_NAME=your_sender@example.com
+DM_FROM_ALIAS=电子书格式转换服务
+DM_ADDRESS_TYPE=1
+DM_TAG_NAME=ebook_converter

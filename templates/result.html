@@ -21,19 +21,35 @@
                     <i class="fas fa-check-circle fa-5x text-success"></i>
                 </div>
                 <h2 class="mb-4">转换成功</h2>
+
+                {% if email_sent %}
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-envelope me-2"></i>
+                        下载链接已成功发送至 <strong>{{ email }}</strong>
+                    </div>
+                {% endif %}
+
                 <p class="mb-4">您的文件已准备好下载</p>
 
                 <div class="d-grid gap-3 col-md-6 mx-auto">
                     <a href="{{ url_for('get_file', filename=filename) }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-download me-2"></i>下载文件
+                        <i class="fas fa-download me-2"></i>立即下载文件
                     </a>
+
+                    {% if oss_url %}
+                        <a href="{{ oss_url }}" target="_blank" class="btn btn-success btn-lg">
+                            <i class="fas fa-cloud-download-alt me-2"></i>从云存储下载
+                            <small class="d-block mt-1">(链接有效期{{ expiration_days }}天)</small>
+                        </a>
+                    {% endif %}
+
                     <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-2"></i>返回首页
                     </a>
                 </div>
 
                 <div class="alert alert-info mt-4">
-                    <small>注意：下载链接将在24小时后失效</small>
+                    <small>注意：本站下载链接将在24小时后失效{% if oss_url %}，云存储下载链接将在{{ expiration_days }}天后失效{% endif %}</small>
                 </div>
             </div>
         </div>
