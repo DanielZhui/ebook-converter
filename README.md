@@ -130,8 +130,8 @@ DM_TAG_NAME=ebook_converter
 
 ## 🌟 预览
 
-![首页截图](screenshots/homepage.png)
-![结果页截图](screenshots/result-page.png)
+![fa065f878a3aeda81f30678bfb8c1ebd.png](https://i.miji.bid/2025/03/18/fa065f878a3aeda81f30678bfb8c1ebd.png)
+![3574d6be32a6617b1d66511a237b1b9c.png](https://i.miji.bid/2025/03/18/3574d6be32a6617b1d66511a237b1b9c.png)
 
 ## 🔄 工作流程
 
