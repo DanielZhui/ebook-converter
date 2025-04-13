@@ -18,28 +18,24 @@ app = Flask(__name__)
 app.secret_key = SECRET_KEY
 
 # 确保文件夹存在
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
-DOWNLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'downloads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
-# 允许的文件格式
-ALLOWED_EXTENSIONS = {'epub', 'mobi', 'pdf', 'txt', 'azw', 'azw3', 'docx', 'html', 'rtf'}
-
-# 支持的输出格式
-OUTPUT_FORMATS = ['epub', 'mobi', 'pdf', 'txt', 'azw3', 'docx', 'html', 'rtf']
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[-1].lower() in ALLOWED_EXTENSIONS
+
 
 def is_valid_email(email):
     """验证邮箱格式是否正确"""
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return re.match(pattern, email) is not None
 
+
 @app.route('/')
 def index():
     return render_template('index.html', formats=OUTPUT_FORMATS)
+
 
 @app.route('/convert', methods=['POST'])
 def convert_file():
@@ -93,7 +89,8 @@ def convert_file():
         cmd = ['ebook-convert', input_path, output_path]
         logger.info(f"执行命令: {' '.join(cmd)}")
 
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
 
         if process.returncode != 0:
@@ -114,12 +111,14 @@ def convert_file():
         email_sent = False
         if send_email_enabled and send_to_email:
             # 上传文件到OSS
-            oss_upload_result = upload_to_oss(output_path, unique_output_filename)
+            oss_upload_result = upload_to_oss(
+                output_path, unique_output_filename)
 
             if oss_upload_result['success']:
                 # 构建邮件内容
                 subject = f"您的电子书 {os.path.splitext(filename)} 已转换完成"
-                expiration_date = (datetime.now() + timedelta(days=oss_upload_result['expiration_days'])).strftime('%Y-%m-%d %H:%M:%S')
+                expiration_date = (datetime.now(
+                ) + timedelta(days=oss_upload_result['expiration_days'])).strftime('%Y-%m-%d %H:%M:%S')
 
                 html_body = f"""
                 <html>
@@ -137,7 +136,8 @@ def convert_file():
                 """
 
                 # 发送邮件
-                email_sent = AliyunEmailService.single_send_mail(send_to_email, subject, html_body)
+                email_sent = AliyunEmailService.single_send_mail(
+                    send_to_email, subject, html_body)
 
                 if email_sent:
                     logger.info(f"邮件已成功发送到 {send_to_email}")
@@ -146,10 +146,10 @@ def convert_file():
 
         # 重定向到下载页面
         return redirect(url_for('download_file',
-                               filename=unique_output_filename,
-                               email=send_to_email if email_sent else '',
-                               email_sent=str(email_sent),
-                               oss_url=oss_upload_result['url'] if oss_upload_result and oss_upload_result['success'] else ''))
+                                filename=unique_output_filename,
+                                email=send_to_email if email_sent else '',
+                                email_sent=str(email_sent),
+                                oss_url=oss_upload_result['url'] if oss_upload_result and oss_upload_result['success'] else ''))
 
     except Exception as e:
         logger.error(f"发生错误: {str(e)}")
@@ -161,33 +161,39 @@ def convert_file():
             os.remove(output_path)
         return redirect(request.url)
 
+
 @app.route('/download/<filename>')
 def download_file(filename):
     email = request.args.get('email', '')
     email_sent = request.args.get('email_sent', 'False') == 'True'
     oss_url = request.args.get('oss_url', '')
     return render_template('result.html',
-                          filename=filename,
-                          email=email,
-                          email_sent=email_sent,
-                          oss_url=oss_url,
-                          expiration_days=OSS_CONFIG['url_expiration'] // (24 * 3600))
+                           filename=filename,
+                           email=email,
+                           email_sent=email_sent,
+                           oss_url=oss_url,
+                           expiration_days=OSS_CONFIG['url_expiration'] // (24 * 3600))
+
 
 @app.route('/get-file/<filename>')
 def get_file(filename):
     return send_from_directory(DOWNLOAD_FOLDER, filename, as_attachment=True)
 
 # 定期清理下载目录中的旧文件
+
+
 def cleanup_old_files():
     current_time = datetime.now()
     for filename in os.listdir(DOWNLOAD_FOLDER):
         file_path = os.path.join(DOWNLOAD_FOLDER, filename)
         # 如果文件超过24小时，则删除
         if os.path.isfile(file_path):
-            file_creation_time = datetime.fromtimestamp(os.path.getctime(file_path))
+            file_creation_time = datetime.fromtimestamp(
+                os.path.getctime(file_path))
             if (current_time - file_creation_time).days >= 1:
                 os.remove(file_path)
                 logger.info(f"已删除旧文件: {file_path}")
+
 
 # 每次启动应用时清理旧文件
 cleanup_old_files()

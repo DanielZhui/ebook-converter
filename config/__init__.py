@@ -21,7 +21,8 @@ UPLOAD_FOLDER.mkdir(exist_ok=True)
 DOWNLOAD_FOLDER.mkdir(exist_ok=True)
 
 # 允许的文件格式
-ALLOWED_EXTENSIONS = {'epub', 'mobi', 'pdf', 'txt', 'azw', 'azw3', 'docx', 'html', 'rtf'}
+ALLOWED_EXTENSIONS = {'epub', 'mobi', 'pdf',
+                      'txt', 'azw', 'azw3', 'docx', 'html', 'rtf'}
 
 # 支持的输出格式
 OUTPUT_FORMATS = ['epub', 'mobi', 'pdf', 'txt', 'azw3', 'docx', 'html', 'rtf']
